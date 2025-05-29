@@ -1,4 +1,20 @@
 services:
+  tg-bot:
+    container_name: "tg-bot-production"
+    image: blessyo7/tg-buddy-bot:latest
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    # БЫЛО:
+    #    volumes:
+    #      - ./bot.log:/bot.log
+# FIX: пределать на
+        #volumes:
+        #  - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: unless-stopped
+
   db:
     container_name: "tg-bot-db"
     image: postgres:17
@@ -18,7 +34,7 @@ services:
       retries: 3
 
   migrate:
-    image: golang:1.24
+    image: golang:1.23
     volumes:
       - ./migrations/postgres:/migrations
     working_dir: /migrations
@@ -30,6 +46,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    env_file:
+      - .env
 
 volumes:
   postgres_data:

@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/ilyakaznacheev/cleanenv"
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -34,9 +33,9 @@ type PgAdminSettings struct {
 
 // New returns a new Config struct.
 func New() *Config {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("No .env file found")
-	}
+	//if err := godotenv.Load(); err != nil {
+	//	log.Fatal("No .env file found")
+	//}
 	adminsIdStrings := getEnv("ADMINS_ID", "")
 	adminsID := make([]int, 0)
 	for _, str := range strings.Fields(adminsIdStrings) {
